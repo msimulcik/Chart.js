@@ -38,6 +38,9 @@ module.exports = function(Chart) {
 			//Number - Point label font size in pixels
 			fontSize: 10,
 
+			//Number - Space between point label and chart
+			spacing: 5,
+
 			//Function - Used to convert point labels
 			callback: function(label) {
 				return label;
@@ -146,11 +149,12 @@ module.exports = function(Chart) {
 			var pointLabelFontSize = helpers.getValueOrDefault(pointLabels.fontSize, globalDefaults.defaultFontSize);
 			var pointLabeFontStyle = helpers.getValueOrDefault(pointLabels.fontStyle, globalDefaults.defaultFontStyle);
 			var pointLabeFontFamily = helpers.getValueOrDefault(pointLabels.fontFamily, globalDefaults.defaultFontFamily);
+			var pointLabeSpacing = helpers.getValueOrDefault(pointLabels.spacing, 5);
 			var pointLabeFont = helpers.fontString(pointLabelFontSize, pointLabeFontStyle, pointLabeFontFamily);
 
 			// Get maximum radius of the polygon. Either half the height (minus the text width) or half the width.
 			// Use this to calculate the offset + change. - Make sure L/R protrusion is at least 0 to stop issues with centre points
-			var largestPossibleRadius = helpers.min([(this.height / 2 - pointLabelFontSize - 5), this.width / 2]),
+			var largestPossibleRadius = helpers.min([(this.height / 2 - pointLabelFontSize - pointLabeSpacing), this.width / 2]),
 				pointPosition,
 				i,
 				textWidth,
@@ -171,7 +175,7 @@ module.exports = function(Chart) {
 			for (i = 0; i < this.getValueCount(); i++) {
 				// 5px to space the text slightly out - similar to what we do in the draw function.
 				pointPosition = this.getPointPosition(i, largestPossibleRadius);
-				textWidth = this.ctx.measureText(this.pointLabels[i] ? this.pointLabels[i] : '').width + 5;
+				textWidth = this.ctx.measureText(this.pointLabels[i] ? this.pointLabels[i] : '').width + pointLabeSpacing;
 				if (i === 0 || i === this.getValueCount() / 2) {
 					// If we're at index zero, or exactly the middle, we're at exactly the top/bottom
 					// of the radar chart, so text will be aligned centrally, so we'll half it and compare
@@ -355,6 +359,7 @@ module.exports = function(Chart) {
 					var pointLabelFontSize = getValueOrDefault(pointLabelOpts.fontSize, globalDefaults.defaultFontSize);
 					var pointLabeFontStyle = getValueOrDefault(pointLabelOpts.fontStyle, globalDefaults.defaultFontStyle);
 					var pointLabeFontFamily = getValueOrDefault(pointLabelOpts.fontFamily, globalDefaults.defaultFontFamily);
+					var pointLabeSpacing = getValueOrDefault(pointLabelOpts.spacing, 5);
 					var pointLabeFont = helpers.fontString(pointLabelFontSize, pointLabeFontStyle, pointLabeFontFamily);
 
 					for (var i = me.getValueCount() - 1; i >= 0; i--) {
@@ -367,7 +372,7 @@ module.exports = function(Chart) {
 							ctx.closePath();
 						}
 						// Extra 3px out for some label spacing
-						var pointLabelPosition = me.getPointPosition(i, outerDistance + 5);
+						var pointLabelPosition = me.getPointPosition(i, outerDistance + pointLabeSpacing);
 
 						// Keep this in loop since we may support array properties here
 						var pointLabelFontColor = getValueOrDefault(pointLabelOpts.fontColor, globalDefaults.defaultFontColor);
