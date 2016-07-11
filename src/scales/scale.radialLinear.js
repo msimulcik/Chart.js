@@ -168,8 +168,7 @@ module.exports = function(Chart) {
 				xProtrusionLeft,
 				xProtrusionRight,
 				radiusReductionRight,
-				radiusReductionLeft,
-				maxWidthRadius;
+				radiusReductionLeft;
 			this.ctx.font = pointLabeFont;
 
 			for (i = 0; i < this.getValueCount(); i++) {
@@ -300,9 +299,9 @@ module.exports = function(Chart) {
 						var yHeight = me.yCenter - yCenterOffset;
 
 						// Draw circular lines around the scale
-						if (gridLineOpts.display) {
-							ctx.strokeStyle = gridLineOpts.color;
-							ctx.lineWidth = gridLineOpts.lineWidth;
+						if (gridLineOpts.display && index !== 0) {
+							ctx.strokeStyle = helpers.getValueAtIndexOrDefault(gridLineOpts.color, index - 1);
+							ctx.lineWidth = helpers.getValueAtIndexOrDefault(gridLineOpts.lineWidth, index - 1);
 
 							if (opts.lineArc) {
 								// Draw circular arcs between the points

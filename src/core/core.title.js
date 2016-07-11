@@ -38,7 +38,7 @@ module.exports = function(Chart) {
 		},
 		update: function(maxWidth, maxHeight, margins) {
 			var me = this;
-			
+
 			// Update Lifecycle - Probably don't want to ever extend or overwrite this function ;)
 			me.beforeUpdate();
 
@@ -111,9 +111,7 @@ module.exports = function(Chart) {
 
 		beforeFit: noop,
 		fit: function() {
-
 			var me = this,
-				ctx = me.ctx,
 				valueOrDefault = helpers.getValueOrDefault,
 				opts = me.options,
 				globalDefaults = Chart.defaults.global,
@@ -155,7 +153,7 @@ module.exports = function(Chart) {
 					fontFamily = valueOrDefault(opts.fontFamily, globalDefaults.defaultFontFamily),
 					titleFont = helpers.fontString(fontSize, fontStyle, fontFamily),
 					rotation = 0,
-					titleX, 
+					titleX,
 					titleY,
 					top = me.top,
 					left = me.left,
@@ -187,7 +185,7 @@ module.exports = function(Chart) {
 	});
 
 	// Register the title plugin
-	Chart.pluginService.register({
+	Chart.plugins.register({
 		beforeInit: function(chartInstance) {
 			var opts = chartInstance.options;
 			var titleOpts = opts.title;
